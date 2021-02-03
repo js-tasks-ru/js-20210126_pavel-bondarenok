@@ -5,4 +5,13 @@
  */
 export function createGetter(path) {
 
+  return (obj) => {
+    for (const key of path.split('.')){
+      if (!(key in obj)){
+        return undefined;
+      }
+      obj = obj[key];
+    }
+    return obj;
+  };
 }
