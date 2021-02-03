@@ -6,12 +6,13 @@
 export function createGetter(path) {
 
   return (obj) => {
+    let clone = {...obj};
     for (const key of path.split('.')){
-      if (!(key in obj)){
+      if (clone[key] === undefined){
         return undefined;
       }
-      obj = obj[key];
+      clone = clone[key];
     }
-    return obj;
+    return clone;
   };
 }
