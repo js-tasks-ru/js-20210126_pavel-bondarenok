@@ -1,10 +1,10 @@
 export default class ColumnChart {
-  constructor({data = [], label = '', link = '', value = 0} = {}) {
+  constructor({data = [], label = '', link = '', value = 0, chartHeight = 50} = {}) {
     this.data = data;
     this.label = label;
     this.link = link;
     this.value = value;
-    this.chartHeight = 50;
+    this.chartHeight = chartHeight;
     this.render();
   }
 
@@ -23,7 +23,7 @@ export default class ColumnChart {
     }, '');
 
     container.innerHTML = `<div class="dashboard__chart_orders ${(this.data.length > 0) ? '' : 'column-chart_loading'}">
-          <div class="column-chart" style="--chart-height: 50">
+          <div class="column-chart" style="--chart-height: ${this.chartHeight}">
             <div class="column-chart__title">
               ${this.label ?? ''}
               <a href="${this.link ?? '#'}" class="column-chart__link">View all</a>
