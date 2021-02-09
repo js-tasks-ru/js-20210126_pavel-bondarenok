@@ -13,14 +13,20 @@ export default class ColumnChart {
   }
 
   render() {
-    const container = document.createElement('div');
-    const props = getColumnProps(this.data);
+    const getColumnProps = (data) => {
+      const maxValue = Math.max(...data);
+      const scale = this.chartHeight / maxValue;
 
-    let columns = this.data.reduce((acc, col, index) => {
-      const prop = props[index];
-      acc += `<div style="--value: ${prop.value}" data-tooltip="${prop.percent}"></div>`;
-      return acc;
-    }, '');
+      return data.map(item => {
+        return {
+          percent: (item / maxValue * 100).toFixed(0) + '%',
+          value: String(Math.floor(item * scale))
+        };
+      });
+    };
+
+    const container = document.createElement('div');
+    const columns = getColumnProps(this.data).map(prop => `<div style="--value: ${prop.value}" data-tooltip="${prop.percent}"></div>`).join('');
 
     container.innerHTML = `<div class="dashboard__chart_orders ${(this.data.length > 0) ? '' : 'column-chart_loading'}">
           <div class="column-chart" style="--chart-height: ${this.chartHeight}">
@@ -39,17 +45,6 @@ export default class ColumnChart {
 
     this.element = container.firstElementChild;
 
-    function getColumnProps(data) {
-      const maxValue = Math.max(...data);
-      const scale = 50 / maxValue;
-
-      return data.map(item => {
-        return {
-          percent: (item / maxValue * 100).toFixed(0) + '%',
-          value: String(Math.floor(item * scale))
-        };
-      });
-    }
   }
 
   update(newData) {
